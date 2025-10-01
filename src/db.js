@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 let cached = global._mongoose || { conn: null, promise: null };
 global._mongoose = cached;
 
+
 export async function connectDB() {
   if (cached.conn) return cached.conn;
 
@@ -11,11 +12,9 @@ export async function connectDB() {
       throw new Error("❌ MONGO_URI not defined in environment variables");
     }
 
-    console.log("⏳ Connecting to MongoDB...");
-    cached.promise = mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      serverSelectionTimeoutMS: 5000 // avoid infinite waiting
+
+    cached.promise = mongoose.connect("mongodb+srv://parthsankpal47_db_user:Z8IJY6WYSmSL7Flj@cluster0.qlqhlix.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", {
+      serverSelectionTimeoutMS: 5000
     })
     .then((m) => {
       console.log("✅ MongoDB Connected");
