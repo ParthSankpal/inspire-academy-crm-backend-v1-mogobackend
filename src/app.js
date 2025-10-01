@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import { connectDB } from "./db.js";
 
+import authRouter from "./routes/auth.routes.js";
 import healthRouter from "./routes/health.route.js";
 
 dotenv.config();
@@ -16,7 +17,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 // DB connect
-connectDB();
+connectDB().catch(err => console.error("DB failed:", err.message));
+
 
 app.get("/", (req, res) => {
   res.json({
@@ -26,8 +28,9 @@ app.get("/", (req, res) => {
 });
 
 
-// Routes
+app.use("/api/auth", authRouter);
 app.use("/api/health", healthRouter);
+
 
 // Local dev only (not on Vercel)
 if (process.env.NODE_ENV !== "production") {

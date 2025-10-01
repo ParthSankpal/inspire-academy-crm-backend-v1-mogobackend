@@ -5,34 +5,27 @@ const router = Router();
 
 router.get("/", async (req, res) => {
   try {
-    // Check DB connection state
     const state = mongoose.connection.readyState;
-    let dbStatus = "disconnected";
+    console.log("Health route hit, mongoose state:", state);
 
+    let dbStatus = "unknown";
     switch (state) {
-      case 0:
-        dbStatus = "disconnected";
-        break;
-      case 1:
-        dbStatus = "connected";
-        break;
-      case 2:
-        dbStatus = "connecting";
-        break;
-      case 3:
-        dbStatus = "disconnecting";
-        break;
+      case 0: dbStatus = "disconnected"; break;
+      case 1: dbStatus = "connected"; break;
+      case 2: dbStatus = "connecting"; break;
+      case 3: dbStatus = "disconnecting"; break;
     }
 
     res.json({
       status: "ok",
       env: process.env.NODE_ENV,
-      db: dbStatus,
+      db: dbStatus
     });
   } catch (error) {
+    console.error("Health route error:", error);
     res.status(500).json({
       status: "error",
-      message: error.message,
+      message: error.message
     });
   }
 });
