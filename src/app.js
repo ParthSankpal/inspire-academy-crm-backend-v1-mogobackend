@@ -18,6 +18,14 @@ app.use(cookieParser());
 // DB connect
 connectDB();
 
+app.get("/", (req, res) => {
+  res.json({
+    message: "🚀 Inspire Academy CRM Backend is running",
+    endpoints: ["/api/health", "/api/auth", "/api/users"]
+  });
+});
+
+
 // Routes
 app.use("/api/health", healthRouter);
 
